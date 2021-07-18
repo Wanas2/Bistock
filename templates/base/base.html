@@ -1,0 +1,105 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.0.0-beta2-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fontawesome-free-5.15.2-web/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/cs-skin-elastic.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">=
+   <style>
+
+       #flotPie1 td {
+            padding:3px;
+        }
+        #flotPie1 table {
+            top: 20px!important;
+            right: -10px!important;
+        }
+
+       .user-area .dropdown-toggle:before {
+           content: none !important;
+       }
+
+       .navbar .navbar-nav > li {
+           padding-left: 0px;
+           padding-right: 0px;
+       }
+
+       .form-control {
+           margin-top: 16px;
+           margin-bottom:16px
+       }
+
+       .float{
+           position:fixed;
+           width:60px;
+           height:60px;
+           bottom:40px;
+           right:40px;
+           background-color:#0077b6;
+           color:#FFF;
+           border-radius:50px;
+           text-align:center;
+           box-shadow: 2px 2px 3px #999;
+       }
+
+       .my-float{
+           margin-top:22px;
+       }
+
+    </style>
+    {% block style %}
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Left Panel -->
+    {% include 'base/sidebar.html' %}
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel" style="margin-top: 0px; padding-top: 35px">
+        <!-- Header-->
+        {% include 'base/navbar.html' %}
+        <!-- /#header -->
+
+        <!-- Content -->
+        <div class="content" style="min-height: 100vh">
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                {% block content %}
+                {% endblock content %}
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->
+
+        <div class="clearfix"></div>
+
+        <!-- Footer -->
+        {% include 'base/footer.html' %}
+        <!-- /.site-footer -->
+    </div>
+    <!-- /#right-panel -->
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-5.0.0-beta2-dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/matchHeight.min.js' %}"></script>
+    <script src="{% static 'assets/fontawesome-free-5.15.2-web/js/all.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <!--Local Stuff-->
+    {% block script %}
+    {% endblock %}
+</body>
+</html>

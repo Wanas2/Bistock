@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Product List{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">Liste de produits </h4>
+            </div>
+            <div class="card-body--">
+                <div class="table-stats order-table ov-h">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th class="serial">#</th>
+                                <th>Nom</th>
+                                <th>Prix d'achat</th>
+                                <th>Prix de vente</th>
+                                <th>Catégorie</th>
+                                <th>Date de création</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if product %}
+                            {% for product in product %}
+                            <tr>
+                                <td class="serial">{{ forloop.counter }}</td>
+                                <td>{{ product.designation }}</td>
+                                <td>{{ product.buying_price }}</td>
+                                <td>{{ product.selling_price }}</td>
+                                <td>{{ product.category }}</td>
+                                <td>{{ product.created_at }}</td>
+                                <td>
+                                    <a href="{% url 'modify-product' product_id=product.id %}" class="btn btn-primary">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'delete-product' product_id=product.id  %}" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                                <tr><td>No Product Data</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                    <a href="{% url 'create-product' %}" class="float">
+                        <i class="fa fa-plus my-float"></i>
+                    </a>
+                </div> <!-- /.table-stats -->
+            </div>
+        </div> <!-- /.card -->
+    </div>  <!-- /.col-lg-8 -->
+
+    
+</div>
+{% endblock content %}

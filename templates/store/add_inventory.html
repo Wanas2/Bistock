@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Inventory{% endblock title %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Ajouter inventaire</strong>
+        </div>
+        <div class="card-body">
+            <form action="#" method="post" novalidate="novalidate">
+                {% csrf_token %}
+                {% for form_item in form %}
+                    <div class="form-group">
+                        <label class="control-label mb-1" for="{{ form_item.html_name }}">
+                            {% if form_item.html_name == "user" %}
+                                {{ "Utilisateur" }}
+                            {% elif form_item.html_name == "product" %}
+                                {{ "Produit" }}
+                            {% elif form_item.html_name == "supplier" %}
+                                {{ "Fournisseur" }}
+                            {% elif form_item.html_name == "qty" %}
+                                {{ "Quantité" }}
+                            {% elif form_item.html_name == "created_at" %}
+                                {{ "Date" }}
+                            {% endif %}
+                        </label>
+                        {{ form_item }}
+                    </div>
+                {% endfor %}
+                <div>
+                    <button id="payment-button" type="submit" class="btn btn-primary btn-block mt-3">
+                        <span id="payment-button-amount">Enregistrer inventaire</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

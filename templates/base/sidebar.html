@@ -1,0 +1,35 @@
+{% load static %}
+<aside id="left-panel" class="left-panel">
+    <nav class="navbar navbar-expand-sm navbar-default">
+        <div id="main-menu" class="main-menu collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                {% with request.resolver_match.url_name as url_name %}
+                <!-- GENERAL -->
+                <li class="menu-title" style="padding-left: 30px; padding-right: 30px">General</li><!-- /.menu-title -->
+                <li class="{% if url_name == 'dashboard' %}active{% endif %}">
+                    <a href="{% url 'dashboard' %}"><i class="menu-icon fa fa-chart-line"></i>Tableaux de bord</a>
+                </li>
+                {% if user.is_admin %}
+                <li class="{% if url_name == 'user-list' or url_name == 'create_user' or url_name == 'modify_user' %}active{% endif %}">
+                    <a href="{% url 'user-list' %}"><i class="menu-icon fa fa-user"></i>Utilisateurs</a>
+                </li>
+                {% endif %}
+                <!-- /GENERAL -->
+
+                <!-- STORE -->
+                <li class="menu-title" style="padding-left: 30px; padding-right: 30px">My Store</li><!-- /.menu-title -->
+                <li class="{% if url_name == 'supplier-list' or url_name == 'create-supplier' or url_name == 'modify-supplier' %}active{% endif %}">
+                    <a href="{% url 'supplier-list' %}"><i class="menu-icon fa fa-address-card"></i>Fournisseurs</a>
+                </li>
+                <li class="{% if url_name == 'product-list' or url_name == 'create-product' or url_name == 'modify-product' %}active{% endif %}">
+                    <a href="{% url 'product-list' %}"><i class="menu-icon fa fa-newspaper"></i>Produits</a>
+                </li>
+                <li class="{% if url_name == 'inventory' or url_name == 'add_inventory' %}active{% endif %}">
+                    <a href="{% url 'inventory' %}"><i class="menu-icon fa fa-dolly"></i>Stocks</a>
+                </li>
+                <!-- /STORE -->
+                {% endwith %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</aside>

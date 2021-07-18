@@ -1,0 +1,328 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% load static %}
+{% block content %}
+    <!-- Widgets  -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-1">
+                            <img src="{% static 'images/dolly-solid.svg' %}" height="42.0px" alt="">
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ total_inventory }}</span></div>
+                                <div class="stat-heading">Stocks</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-2">
+                            <i class="fa fa-newspaper"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ total_product }}</span></div>
+                                <div class="stat-heading">Produits</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-3">
+                            <i class="fa fa-address-card"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ total_supplier }}</span></div>
+                                <div class="stat-heading">Fournisseurs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-4">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{ total_user }}</span></div>
+                                <div class="stat-heading">Utilisateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Widgets -->
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-head m-3 d-flex justify-content-between">
+                    <form action="#">
+                        <select name="vBarSelect" id="vBarSelect" class="form-select form-select-sm">
+                            <option value="y" selected>Années</option>
+                            <option value="m">Mois</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <canvas id="vbarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-head m-3 d-flex justify-content-between">
+                    <form action="#">
+                        <select name="hBarSelect" id="hBarSelect" class="form-select form-select-sm">
+                            <option value="c">Catégories</option>
+                            <option value="d" selected>Désignations</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <canvas id="hbarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-head m-3 d-flex justify-content-between">
+                    <form action="#">
+                        <select name="doughnutSelect" id="doughnutSelect" class="form-select form-select-sm">
+                            <option value="y" selected>Catégories</option>
+                            <!-- <option value="m">Fournisseurs</option> -->
+                        </select>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-head m-3 d-flex justify-content-between">
+                    <form action="#">
+                        <select name="lineSelect" id="lineSelect" class="form-select form-select-sm">
+                            <option value="y" selected>Années</option>
+                            <option value="m">Mois</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'assets/moment/src/moment.js' %}"></script>
+
+    <!--  Chart js -->
+    <script src="{% static 'assets/Chart.js/dist/Chart.js' %}"></script>
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+
+    <!-- Vertical bar chart -->
+    <script>
+        $(function () {
+            function initVBarChart(unit) {
+                const labels = unit === 'y' ? {{ lb_years }} : {{ lb_months }};
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Entrées',
+                        data: unit === 'y' ? {{ entry_product_by_year }} : {{ entry_product_by_month }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1,
+                    }, {
+                        label: 'Sorties',
+                        data: unit === 'y' ? {{ released_product_by_year }} : {{ released_product_by_month }},
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        borderWidth: 1,
+                    }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    },
+                };
+
+                var vbarChart = new Chart(
+                    $('#vbarChart'),
+                    config
+                );
+            }
+
+            initVBarChart('y');
+
+            $("#vBarSelect").on('change', function () {
+                initVBarChart($(this).val());
+            });
+        })
+    </script>
+
+    <!-- Horizontal bar chart -->
+    <script>
+        $(function () {
+            function initHBarChart(unit) {
+                const labels = unit === 'c' ? {{ lb_categories|safe }} : {{ lb_designations|safe }};
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        axis: 'y',
+                        label: 'Entrées',
+                        data: unit === 'c' ? {{ entry_product_by_category }} : {{ entry_product_by_designation }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1
+                    }, {
+                        axis: 'y',
+                        label: 'Sorties',
+                        data: unit === 'c' ? {{ released_product_by_category }} : {{ released_product_by_designation }},
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        borderWidth: 1
+                    },]
+                };
+
+                const config = {
+                    type: 'horizontalBar',
+                    data,
+                    options: {
+                        indexAxis: 'y',
+                    }
+                };
+
+                var hbarChart = new Chart(
+                    $('#hbarChart'),
+                    config
+                );
+            }
+
+            initHBarChart('d');
+
+            $("#hBarSelect").on("change", function () {
+                initHBarChart($(this).val());
+            })
+        })
+    </script>
+
+    <!-- Doughnut chart -->
+    <script>
+        $(function () {
+            let bg_colors = [];
+            const lbc_length = {{ lb_categories|safe }}.length ?? 0;
+            console.log(lbc_length);
+            for(let i = 0; i < lbc_length; i++){
+                bg_colors.push(getRandomColor());
+            }
+
+            const data = {
+                labels: {{ lb_categories|safe }},
+                datasets: [{
+                    data: {{ total_product_by_category }},
+                    backgroundColor: bg_colors,
+                    hoverOffset: 4
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: data,
+            };
+
+            var doughnutChart = new Chart(
+                $('#doughnutChart'),
+                config
+            );
+        })
+    </script>
+
+    <!-- Line chart -->
+    <script>
+        $(function () {
+            function initLineChart(unit) {
+                const labels = unit === 'y' ? {{ lb_years }} : {{ lb_months }};
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Bénéfices',
+                        data: unit === 'y' ? {{ profit_by_year }} : {{ profit_by_month }},
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+
+                const config = {
+                    type: 'line',
+                    data: data,
+                };
+
+                var lineChart = new Chart(
+                    $('#lineChart'),
+                    config
+                );
+            }
+
+            initLineChart('y');
+
+            $("#lineSelect").on("change", function () {
+                initLineChart($(this).val());
+            });
+        })
+    </script>
+{% endblock %}

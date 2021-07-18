@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Profil{% endblock title %}
+
+{% block content %}
+    <a href="{% url 'modify_user' user_id=user.id %}" class="btn btn-primary" style="margin-left: 18px"><i class="fa fa-edit"></i> Modifier</a>
+    <div class="card m-3 p-3" style="height: 100%">
+        <div class="card-head">
+            <h3 style="font-weight: bolder">Mes informations:</h3>
+        </div>
+        <div class="card-body">
+            <p>Nom : {{ user.first_name }}</p>
+            <p>Prenom: {{ user.last_name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Adresse: {{ user.address }}</p>
+            <p>Téléphone: {{ user.tel }}</p>
+            <p>Login: {{ user.username }}</p>
+        </div>
+    </div>
+{% endblock %}

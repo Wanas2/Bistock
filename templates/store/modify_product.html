@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Modify Product{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Modifier produit</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="#" method="post" novalidate="novalidate">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="designation" class="control-label mb-1">Désignation</label>
+                                {{ form.designation }}
+                            </div>
+                            <div class="form-group">
+                                <label for="buying_price" class="control-label mb-1">Prix d'achat</label>
+                                {{ form.buying_price }}
+                            </div>
+                            <div class="form-group">
+                                <label for="selling_price" class="control-label mb-1">Prix de vente</label>
+                                {{ form.selling_price }}
+                            </div>
+                            <div class="form-group">
+                                <label for="category" class="control-label mb-1">Catégorie</label>
+                                {{ form.category }}
+                            </div>
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-primary btn-block mt-3">
+                                    <span id="payment-button-amount"><i class="fa fa-edit"></i>Modifier produit</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+</div>
+{% endblock content %}
